@@ -10,7 +10,7 @@
 					model.subscribe(function(){
 						console.log(model.humanName, 'has changed');
 					});
-				if( model() instanceof Object )
+				if( model instanceof Function && model() instanceof Object )
 					for( var i in model() ){
 						logChanges(model()[i]);
 					}
@@ -24,11 +24,7 @@
 						}
 					}
 				},
-				obj: {
-					a: 5,
-					b: 'hello world'
-				},
-				obj2: 3.1415
+				a: [1,2,3]
 			};
 			var viewModel = ko.observable(model).extend({nested: 'object'});
 			logChanges(viewModel);
