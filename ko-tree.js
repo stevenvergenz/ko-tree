@@ -6,6 +6,7 @@
 	{
 		if( type == 'array' )
 		{
+			target.c = [];
 
 		}
 
@@ -21,6 +22,8 @@
 
 				'write': function(newval)
 				{
+					var flag = false;
+
 					// loop over properties
 					for( var i in newval )
 					{
@@ -32,6 +35,8 @@
 						// create missing entries
 						else
 						{
+							flag = true;
+
 							// create new child array
 							if( newval[i] instanceof Array ){
 								target.c[i] = ko.observable(newval[i]).extend({'nested': 'array'});
@@ -52,8 +57,12 @@
 							target.c[i].subscribe(function(){
 								target.valueHasMutated();
 							});
+
 						}
 					}
+					// signal that target has been updated if new children added
+					if( flag )
+						target.valueHasMutated();
 				}
 			});
 
