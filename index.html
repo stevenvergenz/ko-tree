@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src='knockout-2.3.0.js'></script>
+		<script src='ko-tree.js'></script>
+		<script>
+
+			ko.extenders.logChange = function(target,option){
+				target.subscribe(function(newval){
+					console.log('New value:', newval);
+				});
+			};
+
+			var model = {
+				obj: {
+					a: 5,
+					b: 'hello world'
+				},
+				obj2: 3.1415
+			};
+			var viewModel = ko.observable(model).extend({nested: 'object', logChange: true});
+
+		</script>
+	</head>
+	<body>
+	</body>
+</html>
