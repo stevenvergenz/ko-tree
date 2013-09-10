@@ -26,7 +26,7 @@
 				},
 				a: [1,2,3]
 			};
-			var viewModel = ko.observable(model).extend({nested: 'object'});
+			var viewModel = ko.nestedObservable(model);
 			logChanges(viewModel);
 
 		</script>

@@ -24,6 +24,7 @@
 	{
 		if( type == 'array' )
 		{
+			target._subs = [];
 			var result = ko.computed({
 			
 				'read': function(){
@@ -32,8 +33,32 @@
 
 				'write': function(newval)
 				{
-					console.log('Array type changing:', newval);
-					target(newval);
+					// stop propagating changes
+					for( var i in target._subs ){
+						target._subs[i].dispose();
+					}
+
+					// update sub-observables
+					for( var i in newval )
+					{
+						if( i >= target().length ){
+							target.push( ko.nestedObservable(newval[i]) );
+						}
+						else {
+							target()[i](newval[i]);
+						}
+					}
+
+					// start propagating again
+					for( var i in target() ){
+						target._subs.push( target()[i].subscribe(function(){
+							target.valueHasMutated();
+						}) );
+					}
+
+					target.valueHasMutated();
+					//console.log('Array type changing:', newval);
+					//target(newval);
 				}
 				
 			});
