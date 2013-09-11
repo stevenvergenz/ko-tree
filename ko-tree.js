@@ -43,6 +43,11 @@
 					{
 						if( i >= target().length ){
 							target.push( ko.nestedObservable(newval[i]) );
+							target()[i].humanName = i;
+						}
+						else if( !ko.isObservable(target()[i]) ){
+							target()[i] = ko.nestedObservable(newval[i]);
+							target()[i].humanName = i;
 						}
 						else {
 							target()[i](newval[i]);
